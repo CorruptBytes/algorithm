@@ -1,6 +1,6 @@
 package com.example.y2026.m02.day4;
 
-import com.leecode.strucutre.TreeNode;
+import com.example.structure.TreeNode;
 
 /**
  * <h1>二叉树展开为链表</h1>

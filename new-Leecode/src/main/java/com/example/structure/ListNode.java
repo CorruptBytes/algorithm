@@ -1,4 +1,4 @@
-package com.example.strucutre;
+package com.example.structure;
 
 
 public class ListNode {

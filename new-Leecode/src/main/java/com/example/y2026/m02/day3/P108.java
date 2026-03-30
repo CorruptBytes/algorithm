@@ -1,6 +1,6 @@
 package com.example.y2026.m02.day3;
 
-import com.leecode.strucutre.TreeNode;
+import com.example.structure.TreeNode;
 
 /**
  * <h1>将有序数组转换为二叉搜索树</h1>

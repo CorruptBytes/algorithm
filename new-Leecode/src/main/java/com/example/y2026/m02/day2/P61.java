@@ -1,6 +1,6 @@
 package com.example.y2026.m02.day2;
 
-import com.leecode.strucutre.ListNode;
+import com.example.structure.ListNode;
 
 /**
  * <h1>旋转链表</h1>

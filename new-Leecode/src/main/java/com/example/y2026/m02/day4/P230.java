@@ -1,6 +1,6 @@
 package com.example.y2026.m02.day4;
 
-import com.leecode.strucutre.TreeNode;
+import com.example.structure.TreeNode;
 
 /**
  * <h1>二叉搜索树中第K小的元素</h1>

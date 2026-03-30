@@ -1,6 +1,6 @@
 package com.example.y2026.m01.day09;
 
-import com.leecode.strucutre.ListNode;
+import com.example.structure.ListNode;
 
 /**
  * <h1>反转链表</h1>

@@ -1,6 +1,6 @@
 package com.example.y2026.m02.day4;
 
-import com.leecode.structure.TreeNode;
+import com.example.structure.TreeNode;
 
 import java.util.HashMap;
 import java.util.Map;

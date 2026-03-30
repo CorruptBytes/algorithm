@@ -1,8 +1,8 @@
 package com.example.y2026.m02.day3;
 
-import com.leecode.strucutre.TreeNode;
-
 import java.util.LinkedList;
+
+import com.example.structure.TreeNode;
 
 /**
  * <h1>二叉树的完全性检验</h1>
