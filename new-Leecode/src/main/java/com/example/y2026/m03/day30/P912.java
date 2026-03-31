@@ -62,7 +62,7 @@ public class P912 {
     }
 
     public static void main(String[] args) {
-        int[] arr = {3,2,6,29,2,49};
+        int[] arr = {5,2,3,1};
         P912 test = new P912();
         test.sort(arr);
         System.out.println(Arrays.toString(arr));
