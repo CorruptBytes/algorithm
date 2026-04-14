@@ -19,7 +19,7 @@ public class P912 {
             arr = temp1;
         }
         if ((int) Math.log(size) % 2 != 0) {
-            arr = temp;
+            arr = temp;ew
         }
     }
     //start与end为左闭右开
