@@ -11,7 +11,6 @@ public class P912 {
         int[] temp = new int[len];
         while (size < len) {
             for(int i = 0; i < len; i += 2 * size) {
-                mergeSonArray(arr, i, Math.min(i + size,len), Math.min(i + size,len), Math.min(len,2 * size + i), temp);
             }
             size *= 2;
             int[] temp1 = temp;

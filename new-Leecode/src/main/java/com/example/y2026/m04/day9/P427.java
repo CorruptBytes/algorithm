@@ -6,7 +6,40 @@ package com.example.y2026.m04.day9;
 public class P427 {
 
     public Node construct(int[][] grid) {
-        
+        int n = grid.length;
+        return createNode(grid, 0, n, 0,n);
+    }
+    //前闭后开
+    public Node createNode(int[][] grid,int rowStartIndex, 
+        int rowEndIndex, int columnStartIndex, int columnEndIndex
+    ) {
+        if (rowEndIndex - rowStartIndex == 1) {
+            return new Node(grid[rowStartIndex][columnStartIndex] == 1,true);
+        }
+        int target = grid[rowStartIndex][rowEndIndex];
+        boolean isLeaf = true;
+        for(int i = rowStartIndex; i < rowEndIndex; i++) {
+            for(int j = columnStartIndex; j < columnEndIndex; j++) {
+                if (grid[i][j] != target) {
+                    isLeaf = false;
+                    break;
+                }
+            }
+            if (!isLeaf) {
+                break;
+            }
+        }
+        Node node = new Node();
+        node.val = target == 1;
+        node.isLeaf = isLeaf;
+        if (!isLeaf) {
+            int count = (rowEndIndex - rowStartIndex) / 2;
+            node.topLeft = createNode(grid,rowStartIndex,rowStartIndex + count,columnStartIndex,columnStartIndex + count);
+            node.topRight = createNode(grid,rowStartIndex,rowStartIndex + count,columnStartIndex + count,columnEndIndex);
+            node.bottomLeft = createNode(grid,rowStartIndex + count,rowEndIndex,columnStartIndex,columnStartIndex + count);
+            node.bottomRight = createNode(grid,rowStartIndex + count,rowEndIndex,columnStartIndex + count,columnEndIndex);
+        }
+        return node;
     }
 
 
