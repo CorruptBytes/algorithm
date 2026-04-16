@@ -16,7 +16,7 @@ public class P427 {
         if (rowEndIndex - rowStartIndex == 1) {
             return new Node(grid[rowStartIndex][columnStartIndex] == 1,true);
         }
-        int target = grid[rowStartIndex][rowEndIndex];
+        int target = grid[rowStartIndex][columnStartIndex];
         boolean isLeaf = true;
         for(int i = rowStartIndex; i < rowEndIndex; i++) {
             for(int j = columnStartIndex; j < columnEndIndex; j++) {
