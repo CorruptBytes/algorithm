@@ -5,8 +5,6 @@ package com.example.y2026.m04.day16;
 public class P149 {
     public int maxPoints(int[] points) {
         Map<String,Integer> map = new HashMap<>();
-        points.for
-
     }
 
     public int[] getLine(int[] point1, int[] point2) {
