@@ -89,6 +89,35 @@ public class P54 {
         if (m == n) list.add(matrix[m / 2][m / 2]);
         return list;
     }
+    public List<Integer> spiralOrderV2(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        List<Integer> res = new ArrayList<>();
+        int size = m * n;
+        int top = 0,bottom = m - 1,left = 0,right = n - 1;
+        while (res.size() < size) {
 
+            for (int i = left; i < right && res.size() < size; i++) {
+                res.add(matrix[top][i]);
+            }
+
+            for (int i = top; i < bottom && res.size() < size; i++) {
+                res.add(matrix[i][right]);
+            }
+
+            for (int i = right; i > left && res.size() < size; i--) {
+                res.add(matrix[bottom][i]);
+            }
+
+            for (int i = bottom; i > top && res.size() < size; i--) {
+                res.add(matrix[i][left]);
+            }
+            top++;
+            right--;
+            left++;
+            bottom--;
+        }
+        return res;
+    }
 
 }

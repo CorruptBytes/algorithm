@@ -30,4 +30,19 @@ public class P189 {
             nums[right--] = temp;
         }
     }
+
+    //思考原地解法，可以原地轮转，每次向右移动1次，轮转k轮,这种会超时
+    public void rotateV2(int[] nums, int k) {
+        int n = nums.length;
+        k %= n;
+        if (k == 0 || n == 1) return;
+        for (int i = 0; i < k; i++) {
+            int next = nums[0];
+            for (int j = 0; j < n; j++) {
+                int temp = nums[(j + 1) % n];
+                nums[(j + 1) % n] = next;
+                next = temp;
+            }
+        }
+    }
 }

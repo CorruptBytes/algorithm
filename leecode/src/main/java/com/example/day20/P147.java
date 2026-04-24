@@ -1,6 +1,7 @@
 package com.example.day20;
 
-import com.leecode.structure.ListNode;
+
+import com.example.structure.ListNode;
 
 /**
  * <h1>排序链表</h1>

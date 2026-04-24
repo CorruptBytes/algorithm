@@ -1,6 +1,7 @@
 package com.example.y2026.m01.day12;
 
-import com.leecode.strucutre.ListNode;
+
+import com.example.structure.ListNode;
 
 /**
  * <h1>合并K个升序链表</h1>
@@ -36,21 +37,38 @@ public class P23 {
         merge(lists,count);
     }
 
-    public ListNode mergeTwoLists(ListNode l1,ListNode l2) {
-        if (l1 == null || l2 == null) return l1 != null ? l1 : l2;
-        ListNode virtualNode = new ListNode(0);
-        ListNode prev = virtualNode;
-        while (l1 != null && l2 != null) {
-            if (l1.val < l2.val) {
-                prev.next = l1;
-                l1 = l1.next;
-            } else {
-                prev.next = l2;
-                l2 = l2.next;
+    public ListNode mergeKListsV2(ListNode[] lists) {
+        int size = lists.length;
+        if (size == 0) return null;
+        while (size > 1) {
+            int index = 0;
+            int n = size;
+            for (int i = 1; i < n; i += 2) {
+                lists[index++] = mergeTwoLists(lists[i],lists[i - 1]);
+                size--;
             }
-            prev = prev.next;
+            if (n % 2 == 1) lists[index] = lists[n - 1];
         }
-        prev.next = l1 != null ? l1 : l2;
-        return virtualNode.next;
+        return lists[0];
+    }
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode();
+        ListNode pre = dummy;
+        while (list1 != null && list2 != null) {
+            if (list1.val > list2.val) {
+                pre.next = list2;
+                list2 = list2.next;
+            } else {
+                pre.next = list1;
+                list1 = list1.next;
+            }
+            pre = pre.next;
+        }
+        if (list1 != null) {
+            pre.next = list1;
+        } else {
+            pre.next = list2;
+        }
+        return dummy.next;
     }
 }

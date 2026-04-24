@@ -1,6 +1,7 @@
 package com.example.y2026.m01.day31;
 
-import com.leecode.strucutre.ListNode;
+
+import com.example.structure.ListNode;
 
 /**
  * <h1>两两交换链表中的节点</h1>
@@ -10,16 +11,19 @@ import com.leecode.strucutre.ListNode;
 public class P24 {
 
     public ListNode swapPairs(ListNode head) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode prev = dummy;
+        ListNode dummy = new ListNode(0,head);
+        ListNode pre = dummy;
         ListNode cur = head;
         while (cur != null && cur.next != null) {
-            prev.next = cur.next;
-            cur.next = prev.next.next;
-            prev.next.next = cur;
-            prev = prev.next.next;
-            cur = prev.next;
+            //保存下一个需要交换的节点
+            ListNode temp = cur.next.next;
+            //两两交换
+            pre.next = cur.next;
+            pre.next.next = cur;
+            cur.next = temp;
+            //更新节点
+            pre = cur;
+            cur = temp;
         }
         return dummy.next;
     }

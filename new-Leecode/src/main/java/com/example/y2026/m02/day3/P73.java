@@ -1,6 +1,8 @@
 package com.example.y2026.m02.day3;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * <h1>矩阵置零</h1>
@@ -71,5 +73,36 @@ public class P73 {
                 matrix[i][0] = 0;
             }
         }
+    }
+
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        List<Integer> res = new ArrayList<>();
+        int size = m * n;
+        int top = 0,bottom = m - 1,left = 0,right = n - 1;
+        while (res.size() < size) {
+            if (top == bottom && left == right) res.add(matrix[left][left]);
+            for (int i = left; i < right && res.size() < size; i++) {
+                res.add(matrix[top][i]);
+            }
+
+            for (int i = top; i < bottom && res.size() < size; i++) {
+                res.add(matrix[i][right]);
+            }
+
+            for (int i = right; i > left && res.size() < size; i--) {
+                res.add(matrix[bottom][i]);
+            }
+
+            for (int i = bottom; i > top && res.size() < size; i--) {
+                res.add(matrix[i][left]);
+            }
+            top++;
+            right--;
+            left++;
+            bottom--;
+        }
+        return res;
     }
 }

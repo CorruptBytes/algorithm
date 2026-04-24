@@ -8,8 +8,9 @@ import java.util.List;
 
 /**
  * <h1>合并区间</h1>
- * 以数组 intervals 表示若干个区间的集合，
- * 其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
+ * <p>以数组 intervals 表示若干个区间的集合，
+ * 其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。</p>
+ * <a href="https://leetcode.cn/problems/merge-intervals">链接</a>
  */
 public class P56 {
     //使用List，非原地合并，效率有点低，感觉可以改为原地
@@ -26,7 +27,7 @@ public class P56 {
                 result.add(interval);
                 continue;
             }
-            int[] last = result.getLast();
+            int[] last = result.get(result.size() - 1);
             //因为已经对数组进行排序，所以只要比较当前区间的start是否小于等于合并后的最后一个区间的end，如果是则说明重叠可以合并
             if (last[1] >= interval[0]) {
                 last[1] = Math.max(interval[1],last[1]);

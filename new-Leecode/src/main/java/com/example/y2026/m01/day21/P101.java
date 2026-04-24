@@ -1,6 +1,7 @@
 package com.example.y2026.m01.day21;
 
-import com.leecode.strucutre.TreeNode;
+
+import com.example.structure.TreeNode;
 
 /**
  * <h1>对称二叉树</h1>
@@ -19,4 +20,5 @@ public class P101 {
         if (left.val != right.val) return false;
         return isSymmetric(left.right,right.left) && isSymmetric(left.left,right.right);
     }
+
 }

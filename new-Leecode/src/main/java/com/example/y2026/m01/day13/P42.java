@@ -10,6 +10,33 @@ public class P42 {
 
 
     /**
+     * 动态规划
+     * 每一位置的最高水位一定大于等于当前柱子
+     * 先从左向右扫描，找到根据左侧最大高度，每一位置能达到的最高水位
+     * 再从右向左扫描，找到根据右侧最大高度，每一位置能达到的最高水位
+     * 两者的较小值减去柱子高度就是可接雨水的量
+     */
+    public int trap(int[] height) {
+        int n = height.length;
+        int[] left = new int[n];
+        left[0] = height[0];
+        for (int i = 1; i < n; i++) {
+            left[i] = Math.max(height[i],left[i - 1]);
+        }
+        int[] right = new int[n];
+        right[n - 1] = height[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            right[i] = Math.max(height[i],right[i + 1]);
+        }
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += Math.min(left[i],right[i]) - height[i];
+        }
+        return sum;
+    }
+
+
+    /**
      * 暴力解法
      * 某一位置雨水所能达到的最高水位为其左侧最高柱子与其右侧最高柱子两者的较小值(对于左右边缘位置，可视为其左侧(或右侧)柱子高度为0)，每一位置的最高水位一定大于等于当前柱子。
      * 下标 i 处能接的雨水量等于下标 i 处的水能到达的最大高度减去 height[i]
@@ -17,7 +44,7 @@ public class P42 {
      * @param height
      * @return
      */
-    public int trap(int[] height) {
+    public int trapV1(int[] height) {
         int n = height.length;
         int res = 0;
 
@@ -48,31 +75,5 @@ public class P42 {
         return res;
     }
 
-    /**
-     *空间换时间
-     *
-     * 每一位置的最高水位一定大于等于当前柱子
-     * 先从左向右扫描，找到根据左侧最大高度，每一位置能达到的最高水位
-     * 再从右向左扫描，找到根据右侧最大高度，每一位置能达到的最高水位
-     * 两者的较小值减去柱子高度就是可接雨水的量
-     *
-     */
-    public int trapV1(int[] height) {
-        int n = height.length;
-        int[] left = new int[n];
-        left[0] = height[0];
-        for (int i = 1; i < n; i++) {
-            left[i] = Math.max(height[i],left[i - 1]);
-        }
-        int[] right = new int[n];
-        right[n - 1] = height[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            right[i] = Math.max(height[i],right[i + 1]);
-        }
-        int result = 0;
-        for (int i = 0; i < n; i++) {
-            result += Math.min(left[i],right[i]) - height[i];
-        }
-        return result;
-    }
+
 }

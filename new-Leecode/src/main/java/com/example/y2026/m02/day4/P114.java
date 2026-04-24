@@ -39,4 +39,5 @@ public class P114 {
         tail.right = right;
         flattenV1(right);
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.y2026.m01.day26;
 
-import com.leecode.strucutre.TreeNode;
+
+import com.example.structure.TreeNode;
 
 /**
  * <h1>翻转二叉树</h1>
@@ -21,5 +22,19 @@ public class P226 {
         TreeNode left = root.left;
         root.left = root.right;
         root.right = left;
+    }
+
+
+    public TreeNode invertTreeV1(TreeNode root) {
+        invertNode(root);
+        return root;
+    }
+    public void invertNode(TreeNode root) {
+        if (root == null) return;
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        invertNode(root.left);
+        invertNode(root.right);
     }
 }

@@ -7,7 +7,7 @@ package com.example.y2026.m01.day24;
  *
  */
 public class P240 {
-    //二分查找
+    //对每一行进行二分查找
     public boolean searchMatrix(int[][] matrix, int target) {
         for (int[] nums : matrix) {
             if (nums[0] > target) return false;

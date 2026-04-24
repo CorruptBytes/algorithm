@@ -2,6 +2,8 @@ package com.example.y2026.m02.day4;
 
 import com.example.structure.TreeNode;
 
+import java.util.Stack;
+
 /**
  * <h1>二叉搜索树中第K小的元素</h1>
  * <p>给定一个二叉搜索树的根节点 root ，和一个整数 k ，请你设计一个算法查找其中第 k 小的元素（k 从 1 开始计数）。</p>
@@ -25,6 +27,21 @@ public class P230 {
             return;
         }
         traversal(root.right);
+    }
+    //迭代法
+    public int kthSmallestV1(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            k--;
+            if (k == 0) return root.val;
+            root = root.right;
+        }
+        return Integer.MIN_VALUE;
     }
 
 }

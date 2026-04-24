@@ -1,7 +1,10 @@
 package com.example.y2026.m01.day13;
 
-import com.leecode.strucutre.ListNode;
 
+
+import com.example.structure.ListNode;
+
+import java.util.Currency;
 import java.util.HashSet;
 
 /**
@@ -29,6 +32,8 @@ public class P160 {
         }
         return null;
     }
+    //双指针分别遍历两个链表，当指针遍历到尾部时，就切换到另一个链表的头继续遍历
+    //如果存在交点，则两个指针此时会相等；如果不存在，两个指针会同时为null
     public ListNode getIntersectionNodeV2(ListNode headA, ListNode headB) {
         ListNode A = headA;
         ListNode B = headB;
@@ -37,6 +42,18 @@ public class P160 {
            B = B != null ? B.next : headA;
         }
         return A;
+    }
+
+    public ListNode reverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode cur  = head;
+        while (cur != null) {
+            ListNode temp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = temp;
+        }
+        return pre;
     }
 
 }

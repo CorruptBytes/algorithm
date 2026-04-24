@@ -1,6 +1,8 @@
 package com.example.y2026.m01.day11;
 
-import com.leecode.strucutre.TreeNode;
+
+
+import com.example.structure.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;

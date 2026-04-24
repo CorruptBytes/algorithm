@@ -1,5 +1,6 @@
 package com.example.y2026.m01.day22;
 
+import javax.swing.plaf.synth.ColorType;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,18 +21,36 @@ public class P128 {
         }
         int max = 0;
         for (int num : set) {
+            //最终与将所有元素添加到Set合起来大概需要遍历3次数组，即为O(n) = 3N
+            if (set.contains(num - 1)) continue;
             //如果set中不存在比当前数小1的数，说明当前数为序列的起始，往后查找是否存在比他大的数，算出以此为起始的序列长度
-            //最终大概需要遍历3次数组，即为O(n) = 3N
-            if (!set.contains(num - 1)) {
-                int len = 1;
+            int maxn = 1;
+            while (set.contains(num + 1)) {
+                maxn++;
                 num++;
-                while (set.contains(num)) {
-                    len++;
-                    num++;
-                }
-                max = Math.max(max,len);
             }
+            max = Math.max(max,maxn);
         }
         return max;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

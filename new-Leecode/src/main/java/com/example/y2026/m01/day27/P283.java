@@ -1,5 +1,7 @@
 package com.example.y2026.m01.day27;
 
+import java.util.Arrays;
+
 /**
  * <h1>移动零</h1>
  * 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，
@@ -12,15 +14,14 @@ public class P283 {
      * @param nums
      */
     public void moveZeroes(int[] nums) {
-        int index = 0;
-        for (int i = 0; i < nums.length; i++) {
+        int curIndex = 0;
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
             if (nums[i] != 0) {
-                nums[index++] = nums[i];
+                nums[curIndex++] = nums[i];
             }
         }
-        for (int i = index; i < nums.length; i++) {
-            nums[i] = 0;
-        }
+        Arrays.fill(nums,curIndex,n,0);
     }
 
     public void moveZeroesV1(int[] nums) {
@@ -39,5 +40,8 @@ public class P283 {
         nums[left] = nums[right];
         nums[right] = temp;
     }
+
+
+
 
 }

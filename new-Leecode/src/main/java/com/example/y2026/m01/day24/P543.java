@@ -1,6 +1,7 @@
 package com.example.y2026.m01.day24;
 
-import com.leecode.strucutre.TreeNode;
+
+import com.example.structure.TreeNode;
 
 /**
  * <h1>二叉树的直径</h1>

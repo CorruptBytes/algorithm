@@ -1,6 +1,7 @@
 package com.example.y2026.m01.day24;
 
-import com.leecode.strucutre.TreeNode;
+
+import com.example.structure.TreeNode;
 
 /**
  * <h1>验证二叉搜索树</h1>
@@ -47,5 +48,23 @@ public class P98 {
         pre[0] = root;
         boolean right = next(root.right,pre);
         return left && right;
+    }
+
+    Integer prev = null;
+    public boolean isValidBSTV2(TreeNode root) {
+        return inorderTraversal1(root);
+    }
+
+    public boolean inorderTraversal1(TreeNode root) {
+        if (root == null) return true;
+
+        boolean check =  inorderTraversal1(root.left);
+
+        if (prev != null && root.val <= prev) {
+            return false;
+        }
+        prev = root.val;
+        check = check ? inorderTraversal1(root.right) : check;
+        return check;
     }
 }

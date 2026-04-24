@@ -10,28 +10,9 @@ import java.util.*;
  */
 public class P49 {
 
-    public List<List<String>> groupAnagrams(String[] strs) {
-        HashMap<String,List<String>> map = new HashMap<>(strs.length);
-        int[] counts = new int[26];
-        for (String str : strs) {
-            int n = str.length();
-            for (int i = 0; i < n; i++) {
-                counts[str.charAt(i) - 'a']++;
-            }
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < counts.length; i++) {
-                if (counts[i] > 0) {
-                    sb.append((char) ('a' + i)).append(counts[i]);
-                }
-            }
-            Arrays.fill(counts,0);
-            map.computeIfAbsent(sb.toString(),k -> new LinkedList<>()).add(str);
-        }
-        return map.values().stream().toList();
-    }
 
     //排序
-    public List<List<String>> groupAnagramsV1(String[] strs) {
+    public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> map = new HashMap<String, List<String>>();
         for (String str : strs) {
             char[] array = str.toCharArray();
