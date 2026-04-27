@@ -514,4 +514,293 @@ public class TestClass {
         flatten(root.right);
     }
 
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return createNode(preorder,0,preorder.length - 1,inorder,0,inorder.length - 1);
+    }
+
+    private TreeNode createNode(int[] preorder, int start1, int end1, int[] inorder, int start2, int end2) {
+        if (start1 > end1) return null;
+        int val = preorder[start1];
+        TreeNode root = new TreeNode(val);
+        int index = start2;
+        while (index <= end2) {
+            if (inorder[index] == val) {
+                break;
+            }
+            index++;
+        }
+        int len = index - start2;
+        root.left = createNode(preorder,start1 + 1,start1 + len,inorder,start2,index - 1);
+        root.right = createNode(preorder,start1 + len + 1,end1,inorder,index + 1,end2);
+        return root;
+    }
+    //可不可以模仿前缀和
+    private int ans;
+    public int pathSum(TreeNode root, int targetSum) {
+        // key：从根到 node 的节点值之和
+        // value：节点值之和的出现次数
+        // 注意在递归过程中，哈希表只保存根到 node 的路径的前缀的节点值之和
+        Map<Long, Integer> cnt = new HashMap<>();
+        cnt.put(0L, 1);
+        dfs(root, 0, targetSum, cnt);
+        return ans;
+    }
+
+    // s 表示从根到 node 的父节点的节点值之和（node 的节点值尚未计入）
+    private void dfs(TreeNode node, long s, int targetSum, Map<Long, Integer> cnt) {
+        if (node == null) {
+            return;
+        }
+
+        s += node.val;
+        // 把 node 当作路径的终点，统计有多少个起点
+        ans += cnt.getOrDefault(s - targetSum, 0);
+
+        cnt.merge(s, 1, Integer::sum); // cnt[s]++
+        dfs(node.left, s, targetSum, cnt);
+        dfs(node.right, s, targetSum, cnt);
+        cnt.merge(s, -1, Integer::sum); // cnt[s]-- 恢复现场（撤销 cnt[s]++）
+    }
+    //使用全局变量记录公共祖先
+    TreeNode ancestor = null;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+        searchTargetNode(root,p,q);
+        return ancestor;
+    }
+
+    public boolean searchTargetNode(TreeNode root,TreeNode p,TreeNode q) {
+        if (root == null) return false;
+        boolean isTargetNode = root == q || root == p;
+        boolean left = searchTargetNode(root.left,p,q);
+        boolean right = searchTargetNode(root.right,p,q);
+        if (ancestor == null) {
+            if (left && right) ancestor = root;
+            if ((left || right) && (root == p || root == q)) ancestor = root;
+        }
+        return left || right || isTargetNode;
+    }
+    int count = 0;
+    public int numIslands(char[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    dfs(grid,i,j);
+                }
+            }
+        }
+        return count;
+    }
+
+    public void dfs(char[][] grid, int i, int j) {
+        int m = grid.length;
+        int n = grid[0].length;
+        if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == '0') return;
+        grid[i][j] = '0';
+        dfs(grid,i + 1,j);
+        dfs(grid,i - 1,j);
+        dfs(grid,i,j - 1);
+        dfs(grid,i, j + 1);
+    }
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        int[] inDegree = new int[numCourses];
+        for (int[] prerequisite : prerequisites) {
+            map.computeIfAbsent(prerequisite[1],(k) -> new ArrayList<>()).add(prerequisite[0]);
+            inDegree[prerequisite[0]]++;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        int count = 0;
+        while(!queue.isEmpty()) {
+            int selectCourse = queue.poll();
+            count++;
+            for (Integer course : map.get(selectCourse)) {
+                inDegree[course]--;
+                if (inDegree[course] == 0) {
+                    queue.offer(course);
+                }
+            }
+        }
+        return count == numCourses;
+    }
+
+    public List<List<Integer>> permute(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        backtracking(nums,list,res,used);
+        return res;
+    }
+    public void backtracking(int[] nums,List<Integer> list,List<List<Integer>> res,boolean[] used) {
+        if (list.size() == nums.length) {
+            res.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) continue;
+            list.add(nums[i]);
+            used[i] = true;
+            backtracking(nums,list,res,used);
+            used[i] = false;
+            list.remove(list.size() - 1);
+        }
+    }
+
+    public class P78{
+        public List<List<Integer>> subsets(int[] nums) {
+            List<Integer> list = new ArrayList<>();
+            List<List<Integer>> res = new ArrayList<>();
+            backtracking(nums,0,list,res);
+            return res;
+        }
+        public void backtracking(int[] nums,int start,List<Integer> list,List<List<Integer>> res) {
+            res.add(new ArrayList<>(list));
+            if (start >= nums.length) return;
+            for (int i = start; i < nums.length; i++) {
+                list.add(nums[i]);
+                backtracking(nums,i + 1,list,res);
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+    public class P17 {
+        public List<String> letterCombinations(String digits) {
+            String[] map = {"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+            List<String> res = new ArrayList<>();
+            backtracking(digits,0,new StringBuilder(),res,map);
+            return res;
+        }
+
+        public void backtracking(String digits,int index, StringBuilder sb, List<String> res,String[] map) {
+            if (digits.length() == sb.length()) {
+                res.add(sb.toString());
+                return;
+            }
+            String s = map[digits.charAt(index) - '2'];
+            int len = s.length();
+            for (int i = 0; i < len; i++) {
+                sb.append(s.charAt(i));
+                backtracking(digits,index + 1,sb,res,map);
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+    }
+
+    public class P39 {
+        public List<List<Integer>> combinationSum(int[] candidates, int target) {
+            List<List<Integer>> res = new ArrayList<>();
+            backtracking(candidates,target,0,new ArrayList<>(),res,0);
+            return res;
+        }
+
+        public void backtracking(int[] candidates, int target, int sum, List<Integer> list, List<List<Integer>> res,int start) {
+            if (target == sum) {
+                res.add(new ArrayList<>(list));
+                return;
+            }
+            if (sum > target) {
+                return;
+            }
+            for (int i = start; i < candidates.length; i++) {
+                list.add(candidates[i]);
+                backtracking(candidates,target,sum + candidates[i],list,res,i);
+                list.remove(list.size() - 1);
+            }
+        }
+        public class P22{
+            public List<String> generateParenthesis(int n) {
+                List<String> res = new ArrayList<>();
+                backtracking(n,new StringBuilder(),0,0,res);
+                return res;
+            }
+            public void backtracking(int n,StringBuilder sb,int left, int right,List<String> res) {
+                if (left == n && left == right) {
+                    res.add(sb.toString());
+                    return;
+                }
+                if (right > left || left > n) return;
+                sb.append('(');
+                backtracking(n,sb,left + 1,right,res);
+                sb.deleteCharAt(sb.length() - 1);
+                sb.append(')');
+                backtracking(n,sb,left,right + 1,res);
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+    }
+
+    public class P79 {
+        boolean exist = false;
+        public boolean exist(char[][] board, String word) {
+            int m = board.length;
+            int n = board[0].length;
+            boolean[][] used = new boolean[m][n];
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    backtracking(board,word,i,j,0,used);
+                    if (exist) return true;
+                }
+            }
+            return false;
+        }
+
+        public void backtracking(char[][] board,String word,int i, int j, int index,boolean[][] used) {
+            if (index == word.length()) {
+                exist = true;
+                return;
+            }
+            int m = board.length;
+            int n = board[0].length;
+            if (i < 0 || i >= m || j < 0 || j >= n || used[i][j] || exist || board[i][j] != word.charAt(index)) return;
+            used[i][j] = true;
+            backtracking(board,word,i + 1,j,index + 1,used);
+            backtracking(board,word,i - 1,j,index + 1,used);
+            backtracking(board,word,i,j - 1,index + 1,used);
+            backtracking(board,word,i,j + 1,index + 1,used);
+            used[i][j] = false;
+        }
+    }
+    public class P131{
+        public List<List<String>> partition(String s) {
+            List<String> list = new ArrayList<>();
+            List<List<String>> res = new ArrayList<>();
+            backtracking(s,0,list,res);
+            return res;
+        }
+
+        public void backtracking(String s,int start,List<String> list,List<List<String>> res) {
+            int len = s.length();
+            if (start == len) {
+                res.add(new ArrayList<>(list));
+                return;
+            }
+            for (int i = start; i < len; i++) {
+                String sub = s.substring(start,i + 1);
+                if (!isPartition(sub)) {
+                    continue;
+                }
+                list.add(sub);
+                backtracking(s,i + 1,list,res);
+                list.remove(list.size() - 1);
+            }
+        }
+        public boolean isPartition(String s) {
+            int len = s.length();
+            for (int i = 0; i < len / 2; i++) {
+                if (s.charAt(i) != s.charAt(len - i - 1)) return false;
+            }
+            return true;
+        }
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.y2026.m01.day20;
 
-import com.leecode.strucutre.TreeNode;
+
+import com.example.structure.TreeNode;
 
 /**
  * <h1>从前序与中序遍历序列构造二叉树</h1>

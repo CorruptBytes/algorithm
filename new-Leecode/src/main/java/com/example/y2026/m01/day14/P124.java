@@ -1,12 +1,15 @@
 package com.example.y2026.m01.day14;
 
-import com.leecode.strucutre.TreeNode;
+
+import com.example.structure.TreeNode;
 
 /**
  * <h1>二叉树中的最大路径和</h1>
  * 二叉树中的 路径 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。
  * 同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
  */
+
+//todo 过两天再复习一下
 public class P124 {
     int max = Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
@@ -23,7 +26,7 @@ public class P124 {
         //再算当前结点与其子节点中的最大路径值之和。
         int maxPath = Math.max(left,right) + root.val;
         max = Math.max(maxPath,max);
-        //最后向上返回当前结点与其子节点中的最大路径值之和
+        //最后向上返回当前结点与其子节点中的最大路径值之和,小于0直接舍弃
         return Math.max(maxPath, 0);
     }
 

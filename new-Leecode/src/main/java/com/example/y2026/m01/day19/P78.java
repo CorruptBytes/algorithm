@@ -5,8 +5,9 @@ import java.util.List;
 
 /**
  * <h1>子集</h1>
- * 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
- * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+ * <p>给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+ * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。</p>
+ * <a href="https://leetcode.cn/problems/subsets">链接</a>
  */
 public class P78 {
 
@@ -24,7 +25,7 @@ public class P78 {
         for (int i = start; i < nums.length; i++) {
             result.add(nums[i]);
             backtracking(results,result,nums,i + 1);
-            result.removeLast();
+            result.remove(result.size() - 1);
         }
     }
 }

@@ -15,11 +15,7 @@ import java.util.List;
  * 满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
  */
 public class P236 {
-    private TreeNode ans;
-
-    public P236() {
-        this.ans = null;
-    }
+    private TreeNode ans = null;
     //dfs寻找当前结点root的子树中是否具有p或q结点
     private boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null) return false;
@@ -34,8 +30,8 @@ public class P236 {
     }
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        this.dfs(root, p, q);
-        return this.ans;
+        dfs(root, p, q);
+        return ans;
     }
     //必须保证两个目标结点均存在，否则答案错误
     /*
@@ -88,7 +84,7 @@ public class P236 {
         list.add(node);
         traversal(node.left,targetNode,list);
         traversal(node.right,targetNode,list);
-        list.removeLast();
+        list.remove(list.size() - 1);
 
     }
 }
