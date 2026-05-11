@@ -1,6 +1,7 @@
 package com.example.y2026.m02.day12;
 
-import com.leecode.structure.TreeNode;
+
+import com.example.structure.TreeNode;
 
 /**
  * <h1>相同的树</h1>

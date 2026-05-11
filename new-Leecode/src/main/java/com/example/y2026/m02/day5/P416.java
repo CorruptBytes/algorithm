@@ -10,52 +10,29 @@ import java.util.Arrays;
  */
 public class P416 {
     //回溯，怎么剪枝都是超时.
+    boolean can = false;
     public boolean canPartition(int[] nums) {
-        int sum = Arrays.stream(nums).sum();
-        if (sum % 2 != 0) {
-            return false;
+        int max = nums[0];
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max,num);
         }
-        int target = sum / 2;
-        return backtracking(nums,target,0);
+        if ((sum & 1) == 1 || max << 1 > sum) return false;
+        backtracking(nums,sum >> 1,0,0);
+        return can;
     }
 
-    public boolean backtracking(int[] nums, int target, int start) {
-        if (target == 0) return true;
-        if (target < 0) return false;
-        boolean flag = false;
+    public void backtracking(int[] nums,int target,int sum,int start) {
+        if (target == sum) can = true;
+        if (sum > target || can) return;
         for (int i = start; i < nums.length; i++) {
-            flag = backtracking(nums,target - nums[i],i + 1);
-            if (flag) return true;
-        }
-        return false;
-    }
-
-    boolean flag = false;
-    public boolean canPartitionV1(int[] nums) {
-        int sum = Arrays.stream(nums).sum();
-        if (sum % 2 != 0) {
-            return false;
-        }
-        int target = sum / 2;
-        backtrackingV1(nums,target,0);
-        return flag;
-    }
-
-    public void backtrackingV1(int[] nums, int target, int start) {
-        if (target == 0) {
-            flag = true;
-            return;
-        }
-        if (target < 0) return;
-        for (int i = start; i < nums.length; i++) {
-            backtrackingV1(nums,target - nums[i],i + 1);
-            if (flag) return;
+            backtracking(nums,target,sum + nums[i],i + 1);
         }
     }
 
     //给动态规划跪了
-    //dp[i][j] 表示从数组的 [0,i] 下标范围内选取若干个正整数（可以是 0 个），
-    // 是否存在一种选取方案使得被选取的正整数的和等于 j
+    //dp[i][j] 表示从数组的 [0,i] 下标范围内选取若干个正整数（可以是 0 个），是否存在一种选取方案使得被选取的正整数的和等于 j
     public boolean canPartitionV2(int[] nums) {
         int n = nums.length;
         if (n < 2) return false;
@@ -76,7 +53,7 @@ public class P416 {
             int num = nums[i];
             for (int j = 1; j <= target; j++) {
                 if (j >= num) {
-                    dp[i][j] = dp[i - 1][j] | dp[i - 1][j - num];
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - num];
                 } else {
                     dp[i][j] = dp[i - 1][j];
                 }

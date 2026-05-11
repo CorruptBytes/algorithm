@@ -14,7 +14,6 @@ public class P34 {
         int left = binarySearch(nums,target - 1) + 1;
         int right = binarySearch(nums,target);
         return left <= right ? new int[]{left,right} : new int[]{-1,-1};
-//        return new int[]{left < 0 || left >= nums.length || nums[left] != target ? -1 : left,right < 0 || right >= nums.length || nums[right] != target ? -1 : right};
     }
 
     /**
@@ -40,4 +39,6 @@ public class P34 {
          */
         return r;
     }
+
+
 }

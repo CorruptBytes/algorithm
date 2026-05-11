@@ -7,30 +7,31 @@ package com.example.y2026.m01.day10;
 public class P5 {
     //以每一个字符作为中心，寻找以此字符为中心的最长回文子串
     public String longestPalindrome(String s) {
-        if (s == null || s.isEmpty()) return "";
-        int start = 0;
-        int end = 0;
-        int max = end - start + 1;
-        for (int i = 0; i < s.length(); i++) {
+        int n = s.length();
+        int max = 0;
+        int lMax = 0;
+        for (int i = 0; i < n; i++) {
+            if (i > 0 && s.charAt(i) == s.charAt(i - 1)) continue;
             char c = s.charAt(i);
-            int left = i - 1;
-            int right = i + 1;
-            while (left >= 0 && s.charAt(left) == c) {
-                left--;
+            int l = i;
+            int r = i;
+            while (l >= 0 && s.charAt(l) == c) {
+                l--;
             }
-            while (right < s.length() && s.charAt(right) == c) {
-                right++;
+            while (r < n && s.charAt(r) == c) {
+                r++;
             }
-            while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-                left--;
-                right++;
+            while (l >= 0 && r < n && s.charAt(l) == s.charAt(r)) {
+                l--;
+                r++;
             }
-            if (right - left - 1 > max) {
-                max = right - left - 1;
-                start = left + 1;
-                end = right - 1;
+            l++;
+            r--;
+            if (r - l + 1 > max) {
+                max = r - l + 1;
+                lMax = l;
             }
         }
-        return s.substring(start,end + 1);
+        return s.substring(lMax,lMax + max);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.y2026.m01.day14;
 
-import com.leecode.strucutre.ListNode;
+
+import com.example.structure.ListNode;
 
 /**
  * <h1>删除排序链表中的重复元素Ⅱ</h1>

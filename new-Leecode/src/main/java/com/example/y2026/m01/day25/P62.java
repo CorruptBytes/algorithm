@@ -4,9 +4,10 @@ import java.util.Arrays;
 
 /**
  * <h1>不同路径</h1>
- * 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+ * <p>一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
  * 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
- * 问总共有多少条不同的路径？
+ * 问总共有多少条不同的路径？</p>
+ * <a href="https://leetcode.cn/problems/unique-paths">链接</a>
  */
 public class P62 {
     //动态规划
@@ -35,5 +36,19 @@ public class P62 {
             }
         }
         return dp[n - 1];
+    }
+    //注意到答案等于组合数C(m + n - 2,m - 1)。
+    public int uniquePathsV2(int m, int n) {
+        return (int) combine(m + n - 2, m - 1);
+    }
+
+    public long combine(int n, int k) {
+        long res = 1;
+        k = Math.min(k, n - k); // 对称性优化
+
+        for (int i = 1; i <= k; i++) {
+            res = res * (n - k + i) / i;
+        }
+        return res;
     }
 }

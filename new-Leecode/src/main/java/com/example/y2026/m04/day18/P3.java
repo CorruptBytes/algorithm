@@ -16,7 +16,6 @@ public class P3 {
         int max = 0;
         for (int i = 0; i < n; i++) {
             if (!set.add(s.charAt(i))) {
-                max = Math.max(max,set.size());
                 set.remove(s.charAt(i - set.size()));
                 i--;
             }

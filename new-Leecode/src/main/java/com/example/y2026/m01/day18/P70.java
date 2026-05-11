@@ -3,8 +3,9 @@ package com.example.y2026.m01.day18;
 
 /**
  * <h1>爬楼梯</h1>
- * 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
- * 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+ * <p>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+ *  * 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
+ *  <a href="https://leetcode.cn/problems/climbing-stairs">链接</a>
  */
 public class P70 {
     //动态规划

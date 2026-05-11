@@ -40,7 +40,7 @@ public class P71 {
                 case "", "." -> {
                 }
                 case ".." -> {
-                    if (!paths.isEmpty()) paths.removeLast();
+                    if (!paths.isEmpty()) paths.remove(paths.size() - 1);
                 }
                 default -> paths.add(substring);
             }

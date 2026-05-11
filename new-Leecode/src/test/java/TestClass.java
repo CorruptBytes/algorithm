@@ -2,6 +2,7 @@ import com.example.structure.ListNode;
 import com.example.structure.TreeNode;
 import org.w3c.dom.Node;
 
+import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.IntFunction;
@@ -801,6 +802,691 @@ public class TestClass {
             return true;
         }
     }
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                stack.push(')');
+            } else if (c == '[') {
+                stack.push(']');
+            } else if (c == '{') {
+                stack.push('}');
+            } else {
+                if (stack.isEmpty() || stack.pop() != c) {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
 
+    public int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp,n);
+        dp[1] = 1;
+        dp[0] = 0;
+        for (int i = 0; i <= n; i++) {
+            int j = 1;
+            while (i - (j * j) >= 0) {
+                dp[i] = Math.min(dp[i - j * j] + 1,dp[i]);
+                j++;
+            }
+        }
+        return dp[n];
+    }
 
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> stack = new Stack<>();
+        for (String token : tokens) {
+            switch (token) {
+                case "+":
+                    stack.push(stack.pop() + stack.pop());
+                    break;
+                case "-": {
+                    int b = stack.pop();
+                    int a = stack.pop();
+                    stack.push(a - b);
+                    break;
+                }
+                case "*":
+                    stack.push(stack.pop() * stack.pop());
+                    break;
+                case "/": {
+                    int b = stack.pop();
+                    int a = stack.pop();
+                    stack.push(a / b);
+                    break;
+                }
+                default:
+                    stack.push(Integer.parseInt(token));
+            }
+        }
+        return stack.pop();
+    }
+    class MinStack {
+        Stack<Integer> min = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
+        public MinStack() {
+            min.push(Integer.MAX_VALUE);
+        }
+
+        public void push(int val) {
+            stack.push(val);
+            min.push(min.peek() < val ? min.peek() : val);
+        }
+
+        public void pop() {
+            stack.pop();
+            min.pop();
+        }
+
+        public int top() {
+            return stack.peek();
+        }
+
+        public int getMin() {
+            return min.peek();
+        }
+    }
+    public String decodeString(String s) {
+        int n = s.length();
+        int i = 0;
+        StringBuilder sb = new StringBuilder();
+        while (i < n) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                int k = c - '0';
+                i++;
+                while (i < n && Character.isDigit(s.charAt(i))) {
+                    k = k * 10 + (s.charAt(i) - '0');
+                    i++;
+                }
+                //跳过左括号
+                i++;
+                int start = i;
+                int left = 1;
+                int right = 0;
+                while (i < n && left != right) {
+                    if (s.charAt(i) == '[') left++;
+                    if (s.charAt(i) == ']') right++;
+                    i++;
+                }
+                String sub = decodeString(s.substring(start,i - 1));
+                for (int j = 0; j < k; j++) {
+                    sb.append(sub);
+                }
+            } else {
+                sb.append(c);
+                i++;
+                while (i < n && Character.isLetter(s.charAt(i))) {
+                    sb.append(s.charAt(i));
+                    i++;
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] res = new int[n];
+        for (int i = n - 2; i >= 0; i--) {
+
+            for (int j = i + 1; j < n; j += res[j]) {
+                if (temperatures[j] > temperatures[i]) {
+                    res[i] = j - i;
+                    break;
+                }
+                if (res[j] == 0) {
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
+    public int findKthLargest(int[] nums, int k) {
+        int l = 0;
+        int r = nums.length - 1;
+        return quickSearch(nums,nums.length - k,l,r);
+
+    }
+    public int quickSearch(int[] nums,int k, int l, int r) {
+        if (l == r) return nums[l];
+        int pivot = nums[l];
+        int i = l - 1,j = r + 1;
+        while (i < j) {
+            do {i++;} while (nums[i] < pivot);
+            do {j--;} while (nums[j] > pivot);
+            if (i < j) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        if (k <= j) {
+           return quickSearch(nums,k,l,j);
+        } else return quickSearch(nums,k,j + 1,r);
+    }
+
+    public int findMin(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        int pivot = nums[0];
+        if (pivot <= nums[r]) return pivot;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] >= pivot) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return nums[l];
+    }
+
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int min = prices[0];
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            min = Math.min(min,prices[i]);
+            max = Math.max(max,prices[i] - min);
+        }
+        return max;
+    }
+
+    public int[] topKFrequent(int[] nums, int k) {
+        int n = nums.length;
+        Map<Integer,Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num,map.getOrDefault(num,0) + 1);
+        }
+        PriorityQueue<Map.Entry<Integer,Integer>> queue = new PriorityQueue<>(new Comparator<Map.Entry<Integer, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Integer, Integer> e1, Map.Entry<Integer, Integer> e2) {
+                return e2.getValue() - e1.getValue();
+            }
+        });
+        queue.addAll(map.entrySet());
+        int[] res = new int[k];
+        for (int i = 0; i < k; i++) {
+            res[i] = queue.poll().getKey();
+        }
+        return res;
+    }
+
+    public boolean canJump(int[] nums) {
+        int n = nums.length;
+        int max = nums[0];
+        for (int i = 0; i <= max && max < n; i++) {
+            max = Math.max(i + nums[i],max);
+        }
+        return max >= n - 1;
+    }
+
+    public int jump(int[] nums) {
+        int cover = 0 + nums[0];
+        int count = 0;
+        int max = 0;
+        if (nums.length == 1) {
+            return 0;
+        }
+        for (int i = 0; i<=cover;i++) {
+            max = Math.max(max,i + nums[i]);
+            if (i == cover) {
+                count++;
+                cover = max;
+            }
+            if (cover >= nums.length - 1) {
+                count++;
+                return count;
+            }
+        }
+        return count;
+    }
+    public List<Integer> partitionLabels(String s) {
+        int[] map = new int[26];
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            map[c -'a'] = i;
+        }
+        List<Integer> res = new ArrayList<>();
+        int i = 0;
+        while (i < n) {
+            char c = s.charAt(i);
+            int endIndex = map[c - 'a'];
+            int start = i;
+            while (i <= endIndex) {
+                endIndex = Math.max(map[s.charAt(i) - 'a'],endIndex);
+                i++;
+            }
+            res.add(i - start);
+        }
+        return res;
+    }
+
+    public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+
+        int dp1 = 1;
+        int dp2 = 2;
+        int res = 3;
+        for (int i = 0; i < n - 3; i++) {
+            dp1 = dp2;
+            dp2 = res;
+            res = dp1 + dp2;
+        }
+        return res;
+    }
+
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        res.add(List.of(1));
+        for (int i = 1; i < numRows; i++) {
+            List<Integer> layer = new ArrayList<>();
+            List<Integer> preLayer = res.get(i - 1);
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    layer.add(1);
+                } else {
+                    layer.add(preLayer.get(j) + preLayer.get(j - 1));
+                }
+            }
+            res.add(layer);
+        }
+        return res;
+    }
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n + 1];
+        dp[1] = nums[0];
+        for (int i = 2; i <= n; i++) {
+            dp[i] = Math.max(dp[i - 1],dp[i - 2] + nums[i - 1]);
+        }
+        return dp[n];
+    }
+
+    public int coinChange(int[] coins, int amount) {
+        Arrays.sort(coins);
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp,-1);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (i - coin < 0) {
+                    break;
+                }
+                if (dp[i - coin] != -1) {
+                    dp[i] = dp[i] == -1 ? dp[i - coin] + 1 : Math.min(dp[i - coin] + 1,dp[i]);
+                }
+            }
+        }
+        return dp[amount];
+    }
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;
+        for (int i = 1; i <= n; i++) {
+            for (String word : wordDict) {
+                if (i - word.length() >= 0 && dp[i - word.length()]) {
+                    String sub = s.substring(i - word.length(),i);
+                    if (word.equals(sub)) {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return dp[n];
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp,1);
+        int max = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i],dp[j] + 1);
+                }
+            }
+            max = Math.max(max,dp[i]);
+        }
+        return max;
+    }
+
+    public int maxProduct(int[] nums) {
+        int min = 1;
+        int max = 1;
+        int res = nums[0];
+        for (int num : nums) {
+            int temp = max;
+            max = Math.max(num,Math.max(num * max,min * num));
+            min = Math.min(num,Math.min(num * temp,min * num));
+            res = Math.max(res,max);
+        }
+        return res;
+    }
+    boolean can = false;
+    public boolean canPartition(int[] nums) {
+        int max = nums[0];
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max,num);
+        }
+        if ((sum & 1) == 1 || max << 1 > sum) return false;
+        backtracking(nums,sum >> 1,0,0);
+        return can;
+    }
+
+    public void backtracking(int[] nums,int target,int sum,int start) {
+        if (target == sum) can = true;
+        if (sum > target || can) return;
+        for (int i = start; i < nums.length; i++) {
+            backtracking(nums,target,sum + nums[i],i + 1);
+        }
+    }
+
+    public int longestValidParentheses(String s) {
+        int n = s.length();
+        int left = 0;
+        int right = 0;
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else right++;
+            if (right > left) {
+                left = 0;
+                right = 0;
+            }
+            if (left == right) max = Math.max(max,left * 2);
+        }
+        left = 0;
+        right = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else right++;
+            if (left > right) {
+                left = 0;
+                right = 0;
+            }
+            if (left == right) max = Math.max(max,left * 2);
+        }
+        return max;
+    }
+
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character> set = new HashSet<>();
+        int n = s.length();
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            if (!set.add(s.charAt(i))) {
+                set.remove(s.charAt(i - set.size()));
+                i--;
+            }
+            max = Math.max(max,set.size());
+        }
+        return max;
+    }
+
+    public int uniquePaths(int m, int n) {
+        int[][] dp = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            dp[i][0] = 1;
+        }
+        for (int i = 0; i < n; i++) {
+            dp[0][i] = 1;
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+
+    public int minPathSum(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dp = new int[m][n];
+        dp[0][0] = grid[0][0];
+        for (int i = 1; i < m; i++) {
+            dp[i][0] = dp[i - 1][0] + grid[i][0];
+        }
+        for (int i = 1; i < n; i++) {
+            dp[0][i] = dp[0][i - 1] + grid[0][i];
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = Math.min(dp[i - 1][j],dp[i][j - 1]) + grid[i][j];
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        int max = 0;
+        int lMax = 0;
+        for (int i = 0; i < n; i++) {
+            if (i > 0 && s.charAt(i) == s.charAt(i - 1)) continue;
+            char c = s.charAt(i);
+            int l = i;
+            int r = i;
+            while (l >= 0 && s.charAt(l) == c) {
+                l--;
+            }
+            while (r < n && s.charAt(r) == c) {
+                r++;
+            }
+            while (l >= 0 && r < n && s.charAt(l) == s.charAt(r)) {
+                l--;
+                r++;
+            }
+            l++;
+            r--;
+            if (r - l + 1 > max) {
+                max = r - l + 1;
+                lMax = l;
+            }
+        }
+        return s.substring(lMax,lMax + max);
+    }
+
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j],dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    public int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        for (int i = 0; i <= n; i++) {
+            dp[0][i] = i;
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.min(dp[i - 1][j - 1],Math.min(dp[i - 1][j],dp[i][j - 1])) + 1;
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    public int singleNumber(int[] nums) {
+        int n = 0;
+        for (int num : nums) {
+            n ^= num;
+        }
+        return n;
+    }
+
+    public int majorityElement(int[] nums) {
+        int count = 1;
+        int res = nums[0];
+        int n = nums.length;
+        for (int i = 1; i < n; i++) {
+            if (res == nums[i]) {
+                count++;
+            } else {
+                if (count > 0) {
+                    count--;
+                } else {
+                    res = nums[i];
+                    count = 1;
+                }
+            }
+        }
+        return res;
+    }
+    //一次扫描
+    public void sortColors(int[] nums) {
+        int n = nums.length;
+        int p0 = 0;
+        int p1 = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == 1) {
+                int temp = nums[i];
+                nums[i] = nums[p1];
+                nums[p1] = temp;
+                p1++;
+            } else if (nums[i] == 0) {
+                int temp = nums[i];
+                nums[i] = nums[p0];
+                nums[p0] = temp;
+                if (p0 < p1) {
+                    temp = nums[i];
+                    nums[i] = nums[p1];
+                    nums[p1] = temp;
+                }
+                p0++;
+                p1++;
+            }
+        }
+    }
+
+    public void nextPermutation(int[] nums) {
+        int i = nums.length - 2;
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+        if (i >= 0) {
+            int j = nums.length - 1;
+            while (j >= 0 && nums[i] >= nums[j]){
+                j--;
+            }
+            swap(nums,i,j);
+        }
+        reverse(nums,i + 1);
+
+    }
+    public void swap(int[] nums,int l, int r) {
+        int temp = nums[l];
+        nums[l] = nums[r];
+        nums[r] =temp;
+    }
+    public void reverse(int[] nums, int start) {
+        int l = start, r = nums.length - 1;
+        while (l < r) {
+            swap(nums,l,r);
+            l++;
+            r--;
+        }
+    }
+
+    public static int tableSizeFor(int cap) {
+        if (cap <= 0) return 1;
+        cap -= 1;
+        cap |= cap >>> 1;
+        cap |= cap >>> 2;
+        cap |= cap >>> 4;
+        cap |= cap >>> 8;
+        cap |= cap >>> 16;
+        return cap + 1;
+    }
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new ArrayList<>();
+        //初始化棋盘
+        List<StringBuilder> square = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < n; j++) {
+                sb.append('.');
+            }
+            square.add(sb);
+        }
+        //用于判断哪一列还没有棋子
+        boolean[] used = new boolean[n];
+        backtracking(square,n,used,res,0);
+        return res;
+    }
+    public void backtracking(List<StringBuilder> square,int n, boolean[] used,List<List<String>> res,int i) {
+        if (i == n) {
+            res.add(square.stream().map(StringBuilder::toString).toList());
+            return;
+        }
+        for (int j = 0; j < n; j++) {
+            if (!isValid(square,i,j,n) || used[j]) {
+                continue;
+            }
+            square.get(i).setCharAt(j,'Q');
+            used[j] = true;
+            backtracking(square,n,used,res,i + 1);
+            square.get(i).setCharAt(j,'.');
+            used[j] = false;
+        }
+    }
+    public boolean isValid(List<StringBuilder> square,int r,int c,int n) {
+        for (int i = r + 1, j = c + 1; i < n && j < n; i++,j++) {
+            if (square.get(i).charAt(j) == 'Q') {
+                return false;
+            }
+        }
+        for (int i = r - 1, j = c - 1; i >= 0 && j >= 0; i--,j--) {
+            if (square.get(i).charAt(j) == 'Q') {
+                return false;
+            }
+        }
+        for (int i = r + 1, j = c - 1; i < n && j >= 0; i++,j--) {
+            if (square.get(i).charAt(j) == 'Q') {
+                return false;
+            }
+        }
+        for (int i = r - 1, j = c + 1; i >= 0 && j < n; i--,j++) {
+            if (square.get(i).charAt(j) == 'Q') {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -2,9 +2,10 @@ package com.example.y2026.m01.day11;
 
 /**
  * <h1>买卖股票的最佳时机</h1>
- * 给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
+ * <p>给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
  * 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
- * 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0
+ * 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0</p>
+ * <a href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock">链接</a>
  */
 public class P121 {
 
@@ -18,7 +19,7 @@ public class P121 {
         }
         return max;
     }
-    //这种更快，我也不知道为啥
+    //这种更快
     public int maxProfitV1(int[] prices) {
         int minprice = Integer.MAX_VALUE;
         int maxprofit = 0;

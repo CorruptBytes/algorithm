@@ -13,13 +13,13 @@ public class P912 {
     }
 
     /**
-     * 会将nums分为[left,j],[j + 1,right]两个分区，必须以j为划分，且j位置属于左分区。
+     *
      * @param nums
      * @param left
      * @param right
      */
     public void quickSort(int[] nums, int left, int right) {
-        if (left == right) return;
+        if (left >= right) return;
         int pivot = nums[left],i = left - 1,j = right + 1;
         while (i < j) {
             do {i++;} while (nums[i] < pivot);
